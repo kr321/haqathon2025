@@ -1,0 +1,7 @@
+# requirements.txt
+ultralytics==8.0.178
+Pillow
+transformers
+torch
+
+
