@@ -13,12 +13,6 @@ import qai_hub as hub
 target_device = hub.Device("Snapdragon X Elite CRD")
 from enum import Enum
 
-class Disaster(Enum):
-    EQ = 1
-    FLOOD = 2
-    FIRE = 3
-    HURRICANE = 4
-
 advice_eq = {
     "0" : "Stay calm and remember not to panic! Follow proper safety protocols and be aware of your surroundings :)",
     "26": "The handbag with a utility to carry important small objects (bandaids, medication, etc.) during crisis.",
@@ -89,10 +83,10 @@ advice_hurricane = {
     "72": "Use the refrigerator to block windows or doors."
 }
 
-advice = [EQ, FLOOD, FIRE, HURRICANE]
+advice = [advice_eq, advice_flood, advice_fire, advice_hurricane]
 
 # Example usage
-def photo(int disaster)
+def photo(disaster):
     is_debug = True
     # config
     config_file = './config.json'
@@ -109,11 +103,13 @@ def photo(int disaster)
     objects = yolo_eval_and_list(yolov8_app, frame_pil, (yolov8_h, yolov8_w))
     already_listed = set()
     people = 0
+    str_out = []
     for i in objects:
         if i == 0:
             people+=1
         if str(i) in advice[disaster] and i not in already_listed:
-            print(advice[str(i)])
+            str_out.append(advice[disaster][str(i)])
         already_listed.add(i)
     if people > 1:
-        print("Multiple people detected. Stay calm, stay together, and support one another — safety is stronger in numbers.")
+        str_out.append("Multiple people detected. Stay calm, stay together, and support one another — safety is stronger in numbers.")
+    return str_out

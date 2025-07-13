@@ -6,12 +6,12 @@ from PyQt6.QtWidgets import (
 )
 from PyQt6.QtGui import QPixmap, QImage
 from PyQt6.QtCore import Qt
+from app import photo
 
 class DisasterChatUI(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Disaster Assistant")
-
         layout = QVBoxLayout()
 
         self.category_buttons = QHBoxLayout()
@@ -53,22 +53,47 @@ class DisasterChatUI(QWidget):
         button = self.sender()
         self.current_category = button.text()
         self.chat_display.append(f"Disaster Type: {self.current_category}")
+        match self.current_category:
+            case "Earthquake":
+                self.chat_display.append(f"Expect aftershocks and avoid using open flames until utilities are cleared. Take cover if more shaking occurs.")
+            case "Flood":
+                self.chat_display.append(f"Move to the highest safe level of your home, but avoid attics without ventilation. Shut off electricity if water is rising. Don’t drink tap water unless declared safe. Keep emergency supplies dry.")
+            case "Fire":
+                self.chat_display.append(f"Close all windows and doors to prevent smoke from entering. Turn off ventilation systems, and stay low.")
+            case "Hurricane":
+                self.chat_display.append(f"Shelter in a windowless interior room on the lowest floor. Avoid using candles—opt for flashlights. Stay away from exterior walls and doors. If flooding begins, move to higher ground within your home.")
+            case _:
+                self.chat_display.append(f"")
+        
 
     def take_photo(self):
-        cap = cv2.VideoCapture(0)
-        ret, frame = cap.read()
-        cap.release()
-        if ret:
-            height, width, _ = frame.shape
-            bytes_per_line = 3 * width
-            qt_image = QImage(
-                frame.data, width, height, bytes_per_line, QImage.Format.Format_RGB888
-            ).rgbSwapped()
-            pixmap = QPixmap.fromImage(qt_image)
-            self.image_label.setPixmap(pixmap.scaled(300, 300, Qt.AspectRatioMode.KeepAspectRatio))
-            self.chat_display.append("Photo captured.")
-        else:
-            self.chat_display.append("Failed to take photo.")
+        match self.current_category:
+            case "Earthquake":
+                out_text = photo(0)
+            case "Flood":
+                out_text = photo(1)
+            case "Fire":
+                out_text = photo(2)
+            case "Hurricane":
+                out_text = photo(3)
+            case _:
+                out_text = []
+        # cap = cv2.VideoCapture(0)
+        # ret, frame = cap.read()
+        # cap.release()
+        # if ret:
+        #     height, width, _ = frame.shape
+        #     bytes_per_line = 3 * width
+        #     qt_image = QImage(
+        #         frame.data, width, height, bytes_per_line, QImage.Format.Format_RGB888
+        #     ).rgbSwapped()
+        #     pixmap = QPixmap.fromImage(qt_image)
+        #     self.image_label.setPixmap(pixmap.scaled(300, 300, Qt.AspectRatioMode.KeepAspectRatio))
+        #     self.chat_display.append("Photo captured.")
+        # else:
+        #     self.chat_display.append("Failed to take photo.")
+        for i in out_text:
+            self.chat_display.append(i)
 
     def send_message(self):
         msg = self.user_input.text()
