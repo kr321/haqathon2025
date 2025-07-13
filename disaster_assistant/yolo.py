@@ -58,11 +58,14 @@ def yolo_eval_and_list(yolov8_app, frame_pil, input_size):
 
     # Print object list with confidence
     print("\n🧾 Objects Detected:")
+    out = []
     for i in range(len(class_idxs[0])):
         cls_idx = class_idxs[0][i].item()
         score = round(scores[0][i].item(), 2)
         name = yolo_names.get(cls_idx, f"class_{cls_idx}")
+        out.append(cls_idx)
         print(f" - {name} (Confidence: {score})")
+    return out
 
 # Main loop
 def main_loop(yolov8_app, qhealth_config: QHealthConfig, is_debug=True):
