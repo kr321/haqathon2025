@@ -1,6 +1,6 @@
 
-**APP:**  
-__ is an app that provides help during the aftermath of natural disasters. It provides basic instructions for four different types of disasters (fires, earthquake, flood, hurricane) and additional guidance by scanning your surroundings for objects you can use for that disaster. It also contains capabilities 
+**survAIval:**  
+survAIval is an app that provides help during the aftermath of natural disasters. It provides basic instructions for four different types of disasters (fires, earthquake, flood, hurricane) and additional guidance by scanning your surroundings for objects you can use for that disaster. It also contains capabilities 
 
 **TO RUN:**  
 pip install --trusted-host pypi.org --trusted-host files.pythonhosted.org -r requirements.txt  
