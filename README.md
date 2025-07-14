@@ -6,7 +6,7 @@ __ is an app that provides help during the aftermath of natural disasters. It pr
 pip install --trusted-host pypi.org --trusted-host files.pythonhosted.org -r requirements.txt  
 python display.py  
 
-**DEV CONTACTS (Team 3hr Commitment):**
+**DEV CONTACTS (Team 3hr Commitment):**  
 Divya Ramesh (dramesh@quicinc.com)  
 Kavya Ramesh (kavyrame@qti.qualcomm.com)  
 Dipakshi Pal (dipakshi@qti.qualcomm.com)  
