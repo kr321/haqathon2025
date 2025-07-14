@@ -78,20 +78,20 @@ class DisasterChatUI(QWidget):
                 out_text = photo(3)
             case _:
                 out_text = []
-        # cap = cv2.VideoCapture(0)
-        # ret, frame = cap.read()
-        # cap.release()
-        # if ret:
-        #     height, width, _ = frame.shape
-        #     bytes_per_line = 3 * width
-        #     qt_image = QImage(
-        #         frame.data, width, height, bytes_per_line, QImage.Format.Format_RGB888
-        #     ).rgbSwapped()
-        #     pixmap = QPixmap.fromImage(qt_image)
-        #     self.image_label.setPixmap(pixmap.scaled(300, 300, Qt.AspectRatioMode.KeepAspectRatio))
-        #     self.chat_display.append("Photo captured.")
-        # else:
-        #     self.chat_display.append("Failed to take photo.")
+        cap = cv2.VideoCapture(0)
+        ret, frame = cap.read()
+        cap.release()
+        if ret:
+            height, width, _ = frame.shape
+            bytes_per_line = 3 * width
+            qt_image = QImage(
+                frame.data, width, height, bytes_per_line, QImage.Format.Format_RGB888
+            ).rgbSwapped()
+            pixmap = QPixmap.fromImage(qt_image)
+            self.image_label.setPixmap(pixmap.scaled(300, 300, Qt.AspectRatioMode.KeepAspectRatio))
+            self.chat_display.append("Photo captured.")
+        else:
+            self.chat_display.append("Failed to take photo.")
         for i in out_text:
             self.chat_display.append(i)
 

@@ -1,6 +1,6 @@
 import time
 import numpy as np
-from utils import QHealthConfig, get_frame
+from utils import Config, get_frame
 
 from qai_hub_models.models.yolov8_det.app import YoloV8DetectionApp
 from qai_hub_models.models.yolov8_det.model import YoloV8Detector
@@ -67,35 +67,3 @@ def yolo_eval_and_list(yolov8_app, frame_pil, input_size):
         print(f" - {name} (Confidence: {score})")
     return out
 
-# Main loop
-def main_loop(yolov8_app, qhealth_config: QHealthConfig, is_debug=True):
-    yolov8_h, yolov8_w = YoloV8Detector.get_input_spec()["image"][0][2:]
-    frame_pil, _ = get_frame(qhealth_config, use_camera=True)
-    if frame_pil is None:
-        print("🚫 No camera frame captured.")
-        return
-    yolo_eval_and_list(yolov8_app, frame_pil, (yolov8_h, yolov8_w))
-
-# Run program
-if __name__ == "__main__":
-    is_debug = True
-    config_file = "./config.json"
-    qhealth_config = QHealthConfig.from_config_file(config_file)
-
-    if not qhealth_config.enable_degree0_cam:
-        print("⚠️ No camera enabled. Exiting.")
-    else:
-        if is_debug:
-            qhealth_config.setup_debug_figure()
-
-        yolov8_app = load_yolov8_app(is_debug)
-        app_scheduler = RepeatedTimer(
-            qhealth_config.update_interval_s,
-            main_loop, yolov8_app, qhealth_config, is_debug
-        )
-
-        print(f"🕒 Running for {qhealth_config.run_duration_s} seconds...")
-        try:
-            time.sleep(qhealth_config.run_duration_s)
-        finally:
-            app_scheduler.stop()

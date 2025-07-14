@@ -13,8 +13,8 @@ from cv2_enumerate_cameras import enumerate_cameras
 from qai_hub_models.utils.asset_loaders import load_image
 
 
-class QHealthConfig(object):
-    """Configuration class for QHealth
+class Config(object):
+    """Configuration class for app
 
     """
     # GUI input,
@@ -32,7 +32,7 @@ class QHealthConfig(object):
         if self.output_folder:
             self.output_folder.mkdir(parents=True, exist_ok=True)
         # make directory for saving checkpoints and log.
-
+        # taken from previous project
 
     def __getitem__(self, name):
         """Access items like ordinary dict."""
@@ -98,8 +98,8 @@ class QHealthConfig(object):
             config = json.load(handle)
 
         return cls(config)
-        
-def get_frame(config:QHealthConfig, use_camera=True, is_bad=True):
+
+def get_frame(config:Config, use_camera=True, is_bad=True):
     """get one frame based on configuration
 
     :param config:

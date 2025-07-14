@@ -7,7 +7,7 @@ from qai_hub_models.models.yolov8_det.model import YoloV8Detector
 from qai_hub_models.utils.image_processing import pil_resize_pad, pil_undo_resize_pad
 
 from yolo import load_yolov8_app, yolo_eval_and_list
-from utils import get_frame, QHealthConfig
+from utils import get_frame, Config
 
 import qai_hub as hub
 target_device = hub.Device("Snapdragon X Elite CRD")
@@ -21,7 +21,8 @@ advice_eq = {
     "41": "A cup can act as a small container to organize different materials.",
     "45": "A bowl can act as a small container to organize different materials.",
     "57": "Check if the couch has cushions, which can be an effective way to shelter yourself in times of earthquake or can provide fabric.",
-    "60": "Please shelter under the dining table to protect your heads and shoulders from earthquake.",
+    "56": "Please shelter under the table to protect your heads and shoulders from earthquake.",
+    "60": "You can shelter under the table to protect your heads and shoulders from earthquake.",
     "67": "Finding a place with higher population might be better chance to connect cell phones to internet.",
     "72": "Avoid the refrigerator and other large objects.",
     "74": "A clock can keep track of time at times of disasters, especially if power is lost, or the batteries can be removed to power other more essential devices.",
@@ -90,14 +91,14 @@ def photo(disaster):
     is_debug = True
     # config
     config_file = './config.json'
-    qhealth_config = QHealthConfig.from_config_file(config_file)
+    config = Config.from_config_file(config_file)
 
     if is_debug:
-        qhealth_config.setup_debug_figure()
+        config.setup_debug_figure()
     # Load YOLO
     yolov8_app = load_yolov8_app()
 
-    frame_pil, _ = get_frame(qhealth_config, use_camera=True)
+    frame_pil, _ = get_frame(config, use_camera=True)
     yolov8_h, yolov8_w = YoloV8Detector.get_input_spec()["image"][0][2:]
 
     objects = yolo_eval_and_list(yolov8_app, frame_pil, (yolov8_h, yolov8_w))
